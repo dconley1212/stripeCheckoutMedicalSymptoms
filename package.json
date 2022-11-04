@@ -1,0 +1,25 @@
+{
+  "name": "stripecheckoutmedicalsymptoms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dconley1212/stripeCheckoutMedicalSymptoms.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dconley1212/stripeCheckoutMedicalSymptoms/issues"
+  },
+  "homepage": "https://github.com/dconley1212/stripeCheckoutMedicalSymptoms#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "stripe": "^10.16.0"
+  }
+}
