@@ -1,12 +1,19 @@
 require("dotenv").config();
 const path = require("path");
+const cors = require('cors')
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const express = require("express");
 const app = express();
 // app.use(express.static("public"));
 app.use(express.json());
+app.use(cors());
 const port = process.env.PORT 
+
+const corsOptions = {
+    origin: "http://localhost:3000",
+    optionsSuccessStatus: 200,
+}
 
 const calculateOrderAmount = (items) =>{
     return 4400
