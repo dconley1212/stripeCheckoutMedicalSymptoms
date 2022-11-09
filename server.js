@@ -1,5 +1,5 @@
 require("dotenv").config();
-const path = require("path");
+// const path = require("path");
 const cors = require("cors");
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -10,32 +10,41 @@ app.use(express.json());
 app.use(cors());
 const port = process.env.PORT;
 
-const corsOptions = {
-  origin: "http://localhost:3000/checkout",
-  optionsSuccessStatus: 200,
-};
+// const corsOptions = {
+//   origin: "http://localhost:3000/checkout",
+//   optionsSuccessStatus: 200,
+// };
 
 const calculateOrderAmount = (items) => {
   let totalCost = 0;
-  items.forEach((item) => (totalCost += item.price));
+  items.forEach(
+    (item) => (totalCost = parseInt(item.price.toString().split(".").join("")))
+  );
   return totalCost;
 };
 
-app.post("/create-payment-intent", corsOptions, async (req, res) => {
-  const { items } = req.body;
+app.post("/create-payment-intent", async (req, res) => {
+  try {
+    const { items } = req.body;
 
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(items),
-    currency: "usd",
-    automatic_payment_methods: {
-      enabled: true,
-    },
-  });
-  res.send({
-    clientSecret: paymentIntent.client_secret,
-  });
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: calculateOrderAmount(items),
+      currency: "usd",
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
+  } catch (err) {
+    res.status(err.status || 500).json({
+      custom: "Something went wrong",
+      message: err.message,
+    });
+  }
 });
 
 app.listen(port, () => {
-  console.log("Server is listening");
+  console.log(`Server is listening on ${port}`);
 });
